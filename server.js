@@ -1,10 +1,14 @@
 const express = require("express");
 const socketIo = require("socket.io");
 const http = require("http");
+const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+
+// Serve static files (like HTML, CSS, JS) from the 'public' folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // Game state
 let players = {};
@@ -73,6 +77,7 @@ setInterval(() => {
   io.emit("gameState", { players, food });
 }, 100);
 
+// Start the server
 server.listen(5000, () => {
   console.log("Server is running on http://localhost:5000");
 });
